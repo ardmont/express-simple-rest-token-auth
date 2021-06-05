@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
-    "start-dev": "nodemon .",
-    "test": "jest"
+    "start": "NODE_ENV=production node .",
+    "start-dev": "NODE_ENV=development node .",
+    "test": "NODE_ENV=test jest"
   },
   "repository": {
     "type": "git",
