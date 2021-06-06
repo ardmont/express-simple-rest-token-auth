@@ -6,7 +6,12 @@
   "scripts": {
     "start": "NODE_ENV=production node .",
     "start-dev": "NODE_ENV=development node .",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test sequelize db:drop && NODE_ENV=test sequelize db:create && NODE_ENV=test sequelize db:migrate && NODE_ENV=test jest"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
   },
   "repository": {
     "type": "git",
@@ -22,6 +27,7 @@
     "bcrypt": "^5.0.1",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
+    "faker": "^5.5.3",
     "helmet": "^4.6.0",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
