@@ -1,5 +1,5 @@
 module.exports = new Promise((resolve, reject) => {
-  const sequelize = require('./db')
+  const { sequelize } = require('./models')
   sequelize.authenticate()
     .then(() => {
       console.log('Database connection has been established successfully.')
