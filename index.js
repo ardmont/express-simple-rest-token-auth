@@ -1,6 +1,10 @@
 const healthcheck = require('./healthcheck')
 
+const env = process.env.NODE_ENV || 'development'
+require('dotenv').config({ path: `.env.${env}` })
 const express = require('express')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const app = express()
 const port = 3000
@@ -16,7 +20,24 @@ app.get('/', (req, res) => {
 })
 
 app.post('/signin', (req, res) => {
-  res.send('Hello World!')
+  const { User } = require('./models')
+  User.findOne({
+    where: {
+      email: req.body.email
+    },
+    raw: true
+  }).then((user) => {
+    if (user === null || !bcrypt.compareSync(req.body.password, user.password)) {
+      throw new Error('Invalid user or password')
+    }
+    delete user.password
+
+    const token = jwt.sign(user, process.env.JWT_SECRET, { algorithm: 'HS512', expiresIn: '1 hours' })
+
+    res.set('Authorization', `Bearer ${token}`).send(user)
+  }).catch((e) => {
+    res.status(401).send({ message: e.message })
+  })
 })
 
 healthcheck.then(() => {
